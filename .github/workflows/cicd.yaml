@@ -1,0 +1,39 @@
+name: ToDo API GitHub Automation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  DOTNET_VERSION: '8.0.*'
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: build
+        run: dotnet build
+      - name: test
+        run: dotnet test
+
+      - name: Generates BoM and upload to OWASP DTrack
+        id: riskscoreFromDT
+        uses:  Quobis/action-owasp-dependecy-track-check@main
+        with:
+          url: 'https://dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io'
+          key: '${{ secrets.SECRET_OWASP_DT_KEY }}'
+          language: 'dotnet'
+
+      # Show the risk score output 
+      - name: Get the output time
+        run: echo "The risk score of the project is ${{ steps.riskscoreFromDT.outputs.riskscore }}"
