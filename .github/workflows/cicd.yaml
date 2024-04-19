@@ -24,7 +24,7 @@ jobs:
       - run: dotnet build
       - run: dotnet test
       
-      - run: mkdir ./output
+      - run: mkdir ./${{github.workspace}}/output
 
       - name: Generate XML SBOM
         uses: CycloneDX/gh-dotnet-generate-sbom@v1
