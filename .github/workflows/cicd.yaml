@@ -21,10 +21,8 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: build
-        run: dotnet build
-      - name: test
-        run: dotnet test
+      - run: dotnet build
+      - run: dotnet test
       
       - run: mkdir ./output
 
@@ -32,7 +30,7 @@ jobs:
         uses: CycloneDX/gh-dotnet-generate-sbom@v1
         with:
           path: TodoApi.sln
-          out: ${github.GITHUB_WORKSPACE}/output
+          out: ${github.workspace}/output
 
 
       - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
