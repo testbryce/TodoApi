@@ -41,6 +41,8 @@ jobs:
           bomfilename: "./output/bom.xml"
           autocreate: true
 
+      - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+
       # - name: Generates BoM and upload to OWASP DTrack
       #   id: riskscoreFromDT
       #   uses:  Quobis/action-owasp-dependecy-track-check@main
