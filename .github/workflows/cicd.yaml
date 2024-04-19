@@ -30,7 +30,7 @@ jobs:
         uses: CycloneDX/gh-dotnet-generate-sbom@v1
         with:
           path: TodoApi.sln
-          out: ${github.workspace}/output
+          out: ${{github.workspace}}/output
 
 
       - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
