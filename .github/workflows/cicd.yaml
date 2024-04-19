@@ -35,7 +35,7 @@ jobs:
         with:
           serverhostname: dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io
           apikey: ${{ secrets.SECRET_OWASP_DT_KEY }}
-          projectname: ${github.repository}
+          projectname: todo-api
           projectversion: 'main'
           bomfilename: "./bom.xml"
           autocreate: true
