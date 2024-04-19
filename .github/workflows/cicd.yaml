@@ -40,9 +40,9 @@ jobs:
 
       - uses: DependencyTrack/gh-upload-sbom@v2.0.0
         with:
-          serverhostname: https://dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io
+          serverhostname: 'dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io'
           apikey: ${{ secrets.SECRET_OWASP_DT_KEY }}
-          projectname: todo-api
+          projectname: todo-api-two
           projectversion: 'main'
           bomfilename: "./output/bom.xml"
           autocreate: true
