@@ -26,11 +26,13 @@ jobs:
       - name: test
         run: dotnet test
       
+      - run: mkdir ./output
+
       - name: Generate XML SBOM
         uses: CycloneDX/gh-dotnet-generate-sbom@v1
         with:
           path: TodoApi.sln
-          out: output
+          out: ./output
 
       - uses: DependencyTrack/gh-upload-sbom@v2.0.0
         with:
