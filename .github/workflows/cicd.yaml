@@ -24,14 +24,13 @@ jobs:
       - run: dotnet build
       - run: dotnet test
       
-      - run: mkdir ./${{github.workspace}}/output
+      - run: mkdir ${{github.workspace}}/output
 
       - name: Generate XML SBOM
         uses: CycloneDX/gh-dotnet-generate-sbom@v1
         with:
           path: TodoApi.sln
           out: ${{github.workspace}}/output
-
 
       - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 
@@ -41,7 +40,7 @@ jobs:
           apikey: ${{ secrets.SECRET_OWASP_DT_KEY }}
           projectname: todo-api
           projectversion: 'main'
-          bomfilename: "./output/bom.xml"
+          bomfilename: "${{github.workspace}}/output/bom.xml"
           autocreate: true
 
       # - name: Generates BoM and upload to OWASP DTrack
