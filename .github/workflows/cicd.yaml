@@ -26,11 +26,15 @@ jobs:
       
       - run: mkdir ${{github.workspace}}/output
 
-      - name: Generate XML SBOM
-        uses: CycloneDX/gh-dotnet-generate-sbom@v1
-        with:
-          path: TodoApi.sln
-          out: ${{github.workspace}}/output
+      # - name: Generate XML SBOM
+      #   uses: CycloneDX/gh-dotnet-generate-sbom@v1
+      #   with:
+      #     path: TodoApi.sln
+      #     out: ${{github.workspace}}/output
+      - name: generate bom
+        run: | 
+          dotnet tool install --global CycloneDX
+          dotnet CycloneDX TodoApi.csproj --output output
 
       - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 
