@@ -34,6 +34,9 @@ jobs:
           path: TodoApi.sln
           out: ./output
 
+
+      - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+
       - uses: DependencyTrack/gh-upload-sbom@v2.0.0
         with:
           serverhostname: dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io
@@ -42,9 +45,6 @@ jobs:
           projectversion: 'main'
           bomfilename: "./output/bom.xml"
           autocreate: true
-
-      - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-
       # - name: Generates BoM and upload to OWASP DTrack
       #   id: riskscoreFromDT
       #   uses:  Quobis/action-owasp-dependecy-track-check@main
