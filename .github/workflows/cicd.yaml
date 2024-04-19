@@ -25,15 +25,29 @@ jobs:
         run: dotnet build
       - name: test
         run: dotnet test
-
-      - name: Generates BoM and upload to OWASP DTrack
-        id: riskscoreFromDT
-        uses:  Quobis/action-owasp-dependecy-track-check@main
+      
+      - name: Generate XML SBOM
+        uses: CycloneDX/gh-dotnet-generate-sbom@v1
         with:
-          url: 'https://dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io'
-          key: '${{ secrets.SECRET_OWASP_DT_KEY }}'
-          language: 'dotnet'
+          path: TodoApi.sln
+
+      - uses: DependencyTrack/gh-upload-sbom@v2.0.0
+        with:
+          serverhostname: https://dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io
+          apikey: ${{ secrets.SECRET_OWASP_DT_KEY }}
+          projectname: ${GITHUB_REPOSITORY}
+          projectversion: 'main'
+          bomfilename: "./bom.xml"
+          autocreate: true
+
+      # - name: Generates BoM and upload to OWASP DTrack
+      #   id: riskscoreFromDT
+      #   uses:  Quobis/action-owasp-dependecy-track-check@main
+      #   with:
+      #     url: 'https://dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io'
+      #     key: '${{ secrets.SECRET_OWASP_DT_KEY }}'
+      #     language: 'dotnet'
 
       # Show the risk score output 
-      - name: Get the output time
-        run: echo "The risk score of the project is ${{ steps.riskscoreFromDT.outputs.riskscore }}"
+      # - name: Get the output time
+      #   run: echo "The risk score of the project is ${{ steps.riskscoreFromDT.outputs.riskscore }}"
