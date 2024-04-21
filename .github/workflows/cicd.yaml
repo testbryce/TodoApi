@@ -38,16 +38,14 @@ jobs:
 
       - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 
-
-      # - uses: DependencyTrack/gh-upload-sbom@v2.0.0
-      - uses: ./.github/actions/upload-sbom
+      - uses: testbryce/gh-upload-sbom@master
         with:
           serverhostname: 'dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io'
           apikey: ${{ secrets.SECRET_OWASP_DT_KEY }}
           projectname: todo-api
-          project: todo-api
           projectversion: 'main'
           bomfilename: "./output/bom.xml"
+          autocreate: 'true'
 
       # - name: Generates BoM and upload to OWASP DTrack
       #   id: riskscoreFromDT
