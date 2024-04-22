@@ -1,0 +1,43 @@
+name: External repo SBOM
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+env:
+  DOTNET_VERSION: '8.0.*'
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: thompsonbryce/VoteAppSWA
+          token: ${{secrets.BRYCE_READ}}
+
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - run: dotnet build
+      
+      - run: mkdir ${{github.workspace}}/output
+
+      - name: generate bom
+        run: | 
+          dotnet tool install --global CycloneDX
+          dotnet CycloneDX TodoApi.csproj --output output
+
+      - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+
+      - uses: testbryce/gh-upload-sbom@master
+        with:
+          serverhostname: 'dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io'
+          apikey: ${{ secrets.SECRET_OWASP_DT_KEY }}
+          projectname: todo-api
+          projectversion: 'main'
+          bomfilename: "./output/bom.xml"
+          autocreate: 'true'
