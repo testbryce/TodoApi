@@ -6,7 +6,7 @@ on:
     branches: [ main ]
 
 env:
-  DOTNET_VERSION: '8.0.*'
+  DOTNET_VERSION: '7.0.*'
       
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - run: dotnet build
+      - run: dotnet build ./src
       
       - run: mkdir ${{github.workspace}}/output
 
