@@ -29,7 +29,7 @@ jobs:
       - name: generate bom
         run: | 
           dotnet tool install --global CycloneDX
-          dotnet CycloneDX TodoApi.csproj --output output
+          dotnet CycloneDX ./src/VoteAppSwa.sln --output output
 
       - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 
