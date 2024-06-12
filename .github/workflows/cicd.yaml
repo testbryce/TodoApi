@@ -33,12 +33,3 @@ jobs:
           dotnet CycloneDX TodoApi.csproj --output output
 
       - run: ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-
-      - uses: testbryce/gh-upload-sbom@master
-        with:
-          serverhostname: 'dependencytrack-apiserver.delightfulground-74553658.australiaeast.azurecontainerapps.io'
-          apikey: ${{ secrets.SECRET_OWASP_DT_KEY }}
-          projectname: todo-api
-          projectversion: 'main'
-          bomfilename: "./output/bom.xml"
-          autocreate: 'true'
